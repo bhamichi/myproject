@@ -1,26 +1,22 @@
 # fastapi imports
 from fastapi import APIRouter, Depends, HTTPException,status
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
-# 
+
 # typing and schemas
 from typing import Annotated
 from schemas.subscribers_schema import Token,CreateUserRequest
-# 
+
 # model and database imports
-from models.tenant_models import Tenant
-from database import SessionLocal, engine
 from sqlalchemy.orm import Session
-# 
+
 # jwt and password encryption
 from passlib.context import CryptContext
 from jose import jwt,JWTError
 from datetime import timedelta,datetime
-# 
+
 # secret key and credentials
 from dotenv import load_dotenv
 import os
-# 
-
 
 # Load environment variables from .env file
 load_dotenv()

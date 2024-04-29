@@ -1,28 +1,24 @@
 # fastapi imports
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-# 
+ 
 # jwt import
 from jose import jwt, JWTError
 # otp imports
 from datetime import timedelta, datetime
 from emailotp import emailotp
 import pyotp
-# 
+ 
 # typing and schemas
 from typing import Annotated
 from schemas.admins_schema import Status,Email
-# 
+ 
 # model and database imports
 from sqlalchemy.orm import Session
-from models.admin_models import Admin
-from models.tenant_models import Tenant
-from database import SessionLocal, engine
+
 # for secret keys and secret credentials
 import os
 from dotenv import load_dotenv
-# 
-
 
 load_dotenv()
 router = APIRouter(tags=["admin"])
@@ -64,10 +60,10 @@ async def get_current_user(token:Annotated[str,Depends(oauth2_bearer_admin)]):
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
         if username is None or user_id is None:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Could not validate user")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Could not validate admin")
         return {'username':username,'id':user_id}
     except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Could not validate user")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Could not validate admin")
 
 def create_access_token(email:str,user_id:int, expires_delta:timedelta):
     encode = {"sub":email,"id":user_id}
